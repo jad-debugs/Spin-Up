@@ -19,9 +19,8 @@ const std::uint8_t conveyorPort = 69;
 const std::uint8_t flywheelPort = 42;
 
 // sensors later
-const std::uint8_t potentPort1 = 1;
-const std::uint8_t potentPort2 = 2;
-const std::uint8_t potentPort3 = 3;
-const std::uint8_t imuPort = 6;
+const std::uint8_t encoderLPort = 1;
+const std::uint8_t encoderRPort = 2;
+const std::uint8_t encoderBPort = 3;
 
 // pnuematics if we use
