@@ -76,8 +76,8 @@ void autonomous() {}
 void opcontrol() {
 	while (true) {
 		updateDrive();
-                // updateConveyor();
-                // updateFlywheel();
-                rate.delay(40_Hz);
+		// updateConveyor();
+		// updateFlywheel();
+		rate.delay(40_Hz);
 	}
 }
