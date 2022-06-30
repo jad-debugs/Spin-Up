@@ -1,4 +1,5 @@
 #include "main.h"
+#include "okapi/impl/device/rotarysensor/IMU.hpp"
 #include "okapi/impl/device/rotarysensor/potentiometer.hpp"
 
 using namespace okapi;
@@ -22,5 +23,7 @@ const std::uint8_t flywheelPort = 42;
 const std::uint8_t encoderLPort = 1;
 const std::uint8_t encoderRPort = 2;
 const std::uint8_t encoderBPort = 3;
+
+const std::uint8_t imuPort = 4;
 
 // pnuematics if we use
