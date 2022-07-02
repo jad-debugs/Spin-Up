@@ -11,11 +11,6 @@ extern Motor leftFront;
 extern Motor leftTop;
 extern Motor leftBottom;
 
-extern IMU imu;
-extern Potentiometer potent1;
-extern Potentiometer potent1;
-extern Potentiometer potent1;
-
 extern std::shared_ptr<ChassisController> drive;
 
 void updateDrive();
