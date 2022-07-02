@@ -4,8 +4,8 @@
 okapi::Controller controller;
 okapi::Rate rate;
 
-okapi::ADIEncoder leftEncoder = ADIEncoder({1, 'A', 'B'}, false);
-okapi::ADIEncoder rightEncoder = ADIEncoder({1, 'A', 'B'}, false);
-okapi::ADIEncoder backEncoder = ADIEncoder({1, 'A', 'B'}, false);
+okapi::ADIEncoder leftEncoder = ADIEncoder({encoderLPort, 'A', 'B'}, false);
+// okapi::ADIEncoder rightEncoder = ADIEncoder({encoderRPort, 'A', 'B'}, false);
+okapi::ADIEncoder centerEncoder = ADIEncoder({encoderCPort, 'A', 'B'}, false);
 
-okapi::IMU imu = IMU(1, IMUAxes::x);
+okapi::IMU imu = IMU(imuPort, IMUAxes::y);
