@@ -19,7 +19,7 @@ std::shared_ptr<ChassisController> drive =
   .build();
 
 void updateDrive() {
-  drive -> getModel() -> arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 3);
+  drive -> getModel() -> arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 2);
   if (controller.getDigital(ControllerDigital::left) == 1) {
     leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
     leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);

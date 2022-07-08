@@ -4,7 +4,7 @@
 const double PI = 3.141592653589793238462643383279502884L;
 #define toRadian(theta) (PI*theta)
 
-const double WHEEL_RADIUS = 2.0;
+const double WHEEL_RADIUS = 1.375;
 // const double T_l = 2.5;
 const double T_r = 2.5;
 // const double T_b = 2.75;
@@ -42,7 +42,65 @@ void updateOdom() {
     thetaPrev = theta;
 }
 
+// angle in degrees
 void rotate(double targetAngle) {
-    
+    double kP = 0.01;
+    double kI = 0.01;
+    double kD = 0.03;
+
+    double curAngle = 90 - imu.get();
+
+    double error = targetAngle - curAngle;
+    double integral = 0;
+    double derivative = error;
+    double prevError = 0;
+
+    while (abs(error) <= 2) {
+        curAngle = 90 - imu.get();
+        error = targetAngle - curAngle;
+        integral += error;
+        derivative = error - prevError;
+
+        double vel = error*kP + integral*kI + derivative*kD;
+
+        drive -> getModel() -> arcade(0, vel);
+
+        prevError = error;
+
+        rate.delay(100_Hz);
+    }
+
+    drive -> getModel() -> arcade(0, 0);
 }
+
+// distance in inches
+// void driveForward(double distance) {
+//     double kP = 0.01;
+//     double kI = 0.01;
+//     double kD = 0.03;
+
+//     double curPosX = posX;
+//     double curPosY = posY;
+
+//     double integral = 0;
+//     double derivative = error;
+//     double prevError = 0;
+
+//     while (abs(error) <= 3) {
+//         double curPos = posX*posX + posY*posY;
+//         error = abs(curPos - 
+//         integral += error;
+//         derivative = error - prevError;
+
+//         double vel = error*kP + integral*kI + derivative*kD;
+
+//         drive -> getModel() -> arcade(0, vel);
+
+//         prevError = error;
+
+//         rate.delay(100_Hz);
+//     }
+
+//     drive -> getModel() -> arcade(0, 0);
+// }
 
