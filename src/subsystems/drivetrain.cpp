@@ -5,12 +5,12 @@ using namespace okapi;
 
 
 Motor rightFront(rightFrontPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor rightTop(rightTopPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor rightTop(rightTopPort, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor rightBottom(rightBottomPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
-Motor leftFront(leftFrontPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftFront(leftFrontPort, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor leftTop(leftTopPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor leftBottom(leftBottomPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 std::shared_ptr<ChassisController> drive =
   ChassisControllerBuilder()
@@ -19,7 +19,7 @@ std::shared_ptr<ChassisController> drive =
   .build();
 
 void updateDrive() {
-  drive -> getModel() -> arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 2);
+  drive -> getModel() -> tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY), 2);
   if (controller.getDigital(ControllerDigital::left) == 1) {
     leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
     leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);
@@ -29,13 +29,13 @@ void updateDrive() {
     rightTop.setBrakeMode(AbstractMotor::brakeMode::hold);
     rightBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
   }
-  // else if (controller.getDigital(ControllerDigital::right) == 1) {
-  //   leftFront.setBrakeMode(AbstractMotor::brakeMode::coast);
-  //   leftTop.setBrakeMode(AbstractMotor::brakeMode::coast);
-  //   leftBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
+  else if (controller.getDigital(ControllerDigital::right) == 1) {
+    leftFront.setBrakeMode(AbstractMotor::brakeMode::coast);
+    leftTop.setBrakeMode(AbstractMotor::brakeMode::coast);
+    leftBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
 
-  //   rightFront.setBrakeMode(AbstractMotor::brakeMode::coast);
-  //   rightTop.setBrakeMode(AbstractMotor::brakeMode::coast);
-  //   rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
-  // }
+    rightFront.setBrakeMode(AbstractMotor::brakeMode::coast);
+    rightTop.setBrakeMode(AbstractMotor::brakeMode::coast);
+    rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
+  }
 }

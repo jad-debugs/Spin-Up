@@ -55,7 +55,7 @@ void rotate(double targetAngle) {
     double derivative = error;
     double prevError = 0;
 
-    while (abs(error) <= 2) {
+    while (abs(error) <= 3) {
         curAngle = 90 - imu.get();
         error = targetAngle - curAngle;
         integral += error;
@@ -74,33 +74,37 @@ void rotate(double targetAngle) {
 }
 
 // distance in inches
-// void driveForward(double distance) {
-//     double kP = 0.01;
-//     double kI = 0.01;
-//     double kD = 0.03;
+void driveForward(double distance) {
+    double kP = 0.01;
+    double kI = 0.01;
+    double kD = 0.03;
 
-//     double curPosX = posX;
-//     double curPosY = posY;
+    double orgDistance = sqrt(posX*posX + posY*posY);
 
-//     double integral = 0;
-//     double derivative = error;
-//     double prevError = 0;
+    double error = distance;
+    double integral = 0;
+    double derivative = error;
+    double prevError = 0;
 
-//     while (abs(error) <= 3) {
-//         double curPos = posX*posX + posY*posY;
-//         error = abs(curPos - 
-//         integral += error;
-//         derivative = error - prevError;
+    while (error >= 7) {
+        double error = sqrt(posX*posX + posY*posY) - orgDistance;
+        integral += error;
+        derivative = error - prevError;
 
-//         double vel = error*kP + integral*kI + derivative*kD;
+        double vel = error*kP + integral*kI + derivative*kD;
+        vel = (vel > 11000 ? 11000 : vel);
 
-//         drive -> getModel() -> arcade(0, vel);
+        drive -> getModel() -> arcade(vel, 0);
 
-//         prevError = error;
+        prevError = error;
 
-//         rate.delay(100_Hz);
-//     }
+        rate.delay(100_Hz);
+    }
 
-//     drive -> getModel() -> arcade(0, 0);
-// }
+    drive -> getModel() -> arcade(0, 0);
+}
+
+void driveToPoint(double x, double y) {
+    
+}
 

@@ -79,7 +79,9 @@ void opcontrol(void);
  #include "subsystems/drivetrain.h"
  #include "subsystems/ports.h"
  #include "subsystems/conveyor.h"
+ #include "subsystems/indexer.h"
  #include "subsystems/flywheel.h"
+ #include "motion/odom.h"
 //#include <iostream>
 #endif
 

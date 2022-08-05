@@ -2,6 +2,4 @@
 
 using namespace okapi;
 
-extern Motor conveyor;
-
 void updateConveyor();

@@ -8,3 +8,5 @@ extern okapi::ADIEncoder rightEncoder;
 extern okapi::ADIEncoder centerEncoder;
 
 extern okapi::IMU imu;
+
+extern okapi::Motor conveyorIntake;
