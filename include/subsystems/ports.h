@@ -27,4 +27,4 @@ const std::uint8_t flywheelPort = 10;
 // const std::uint8_t imuPort = 4;
 
 // pnuematics if we use
-const std::uint8_t indexerPort = 1;
+const std::uint8_t indexerPort = 'H';

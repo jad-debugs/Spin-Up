@@ -15,5 +15,7 @@ void updateFlywheel() {
             flywheel.moveVelocity(500);
         toggled = !toggled;
     }
-    
+    else if (toggled) {
+        flywheel.moveVelocity(500);
+    }
 }
