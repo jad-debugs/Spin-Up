@@ -10,8 +10,9 @@ void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
+		pros::lcd::set_text(1, "Hello PROS User!");
+	} 
+	else {
 		pros::lcd::clear_line(2);
 	}
 }
@@ -79,6 +80,7 @@ void opcontrol() {
 		updateConveyor();
 		updateIndexer();
 		updateFlywheel();
+		updateOdom();
 		rate.delay(40_Hz);
 	}
 }

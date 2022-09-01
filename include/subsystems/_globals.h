@@ -3,10 +3,8 @@
 extern okapi::Controller controller;
 extern okapi::Rate rate;
 
-// extern okapi::ADIEncoder leftEncoder;
+extern okapi::ADIEncoder leftEncoder;
 extern okapi::ADIEncoder rightEncoder;
 extern okapi::ADIEncoder centerEncoder;
 
-extern okapi::IMU imu;
-
-extern okapi::Motor conveyorIntake;
+// extern okapi::IMU imu;
