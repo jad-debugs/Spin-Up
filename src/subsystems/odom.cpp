@@ -108,15 +108,15 @@ void driveForward(double distance) {
     double kI = 0.01;
     double kD = 0.1;
 
-    double orgDistance = sqrt(posX*posX + posY*posY);
+    double distMoved = 0;
 
     double error = distance;
     double integral = 0;
     double derivative = error;
     double prevError = 0;
 
-    while (error >= 7) {
-        double error = sqrt(posX*posX + posY*posY) - orgDistance;
+    while (error >= 3) {
+        double error =  distance - distMoved;
         integral += error;
         derivative = error - prevError;
 
