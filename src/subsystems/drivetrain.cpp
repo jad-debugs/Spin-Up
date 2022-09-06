@@ -2,8 +2,6 @@
 
 using namespace okapi;
 
-bool reverseDrive = false;
-
 Motor rightFront(rightFrontPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor rightTop(rightTopPort, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor rightBottom(rightBottomPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
@@ -19,12 +17,9 @@ std::shared_ptr<ChassisController> drive =
   .build();
 
 void updateDrive() {
-  if (controller.getDigital(ControllerDigital::X) == 1) {
-    reverseDrive = true;
-  }
-  else {
-    drive -> getModel() -> tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY), 2);
-  }
+  
+  drive -> getModel() -> tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
+
   if (controller.getDigital(ControllerDigital::left) == 1) {
     leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
     leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);
@@ -42,5 +37,8 @@ void updateDrive() {
     rightFront.setBrakeMode(AbstractMotor::brakeMode::coast);
     rightTop.setBrakeMode(AbstractMotor::brakeMode::coast);
     rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
+  }
+  if (controller.getDigital(ControllerDigital::X) == 1) {
+    driveForward(12);
   }
 }
