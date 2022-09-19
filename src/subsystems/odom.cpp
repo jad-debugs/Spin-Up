@@ -20,6 +20,7 @@ double posY = 0;
 double prevLeft = 0;
 double prevRight = 0;
 double prevCenter = 0;
+
 int theta = 0;
 
 double thetaPrev = 0;
@@ -71,19 +72,26 @@ void updateOdom() {
 // angle in degrees
 void rotate(double targetAngle) {
     double kP = 0.01;
-    double kI = 0.01;
+    double kI = 0.0;
     double kD = 0.03;
+
+    targetAngle *= 180/PI;
 
     double curAngle = 0;
 
-    double deltaLeft = toRadian((leftEncoder.get() - prevLeft) * WHEEL_RADIUS);
-    double deltaRight = toRadian((rightEncoder.get() - prevRight) * WHEEL_RADIUS);
+    double prevLeft1 = 0;
+    double prevRight1 = 0;
+
+    double deltaLeft = 0;
+    double deltaRight = 0;
     double error = targetAngle - curAngle;
     double integral = 0;
     double derivative = error;
     double prevError = 0;
 
-    while (abs(error) <= 3) {
+    while (abs(error) <= 0.052) {
+        deltaLeft = (leftEncoder.get() - prevLeft1)*PI/360 * 2*WHEEL_RADIUS;
+        deltaRight = (rightEncoder.get() - prevRight1)*PI/360 * 2*WHEEL_RADIUS; 
         curAngle += (deltaLeft - deltaRight)/(T_r*2);
         // curAngle = 90 - imu.get();
         error = targetAngle - curAngle;
@@ -92,36 +100,38 @@ void rotate(double targetAngle) {
 
         double vel = error*kP + integral*kI + derivative*kD;
 
-        drive -> getModel() -> arcade(0, vel);
+        drive -> getModel() -> tank(vel, 0);
 
         prevError = error;
+
+        prevLeft1 = leftEncoder.get();
+        prevRight1 = rightEncoder.get();
 
         rate.delay(100_Hz);
     }
 
-    drive -> getModel() -> arcade(0, 0);
+    drive -> getModel() -> tank(0, 0);
 }
 
 // distance in inches
 void driveForward(double distance) {
-    double kP = 0.03;
-    double kI = 0.01;
-    double kD = 0.1;
+    double kP = 0.05;
+    double kI = 0.0;
+    double kD = 0.03;
 
-    double distMoved = 0;
-
+    double orgPos = rightEncoder.get()*PI/360 * 2*WHEEL_RADIUS; 
     double error = distance;
     double integral = 0;
-    double derivative = error;
+    double derivative = 0;
     double prevError = 0;
 
-    while (error >= 3) {
-        double error =  distance - distMoved;
+    while (error >= 2) {
+        error =  distance - (rightEncoder.get()*PI/360 * 2*WHEEL_RADIUS - orgPos);
         integral += error;
         derivative = error - prevError;
 
         double vel = error*kP + integral*kI + derivative*kD;
-        vel = (vel > 11000 ? 11000 : vel);
+        vel = (vel > 1 ? 0.98 : vel);
 
         drive -> getModel() -> tank(vel, vel);
 

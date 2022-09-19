@@ -59,7 +59,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -77,10 +79,10 @@ void autonomous() {}
 void opcontrol() {
 	while (true) {
 		updateDrive();
-		updateConveyor();
-		updateIndexer();
-		updateFlywheel();
-		updateOdom();
+		// updateConveyor();
+		// updateIndexer();
+		// updateFlywheel();
+		// updateOdom();
 		rate.delay(40_Hz);
 	}
 }

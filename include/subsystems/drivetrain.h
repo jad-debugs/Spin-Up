@@ -11,6 +11,6 @@ extern Motor leftFront;
 extern Motor leftTop;
 extern Motor leftBottom;
 
-extern std::shared_ptr<ChassisController> drive;
+extern std::shared_ptr<OdomChassisController> drive;
 
 void updateDrive();

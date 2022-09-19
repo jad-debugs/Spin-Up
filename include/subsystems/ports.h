@@ -26,6 +26,7 @@ const std::uint8_t encoderRPort1 = 'C';
 const std::uint8_t encoderRPort2 = 'D';
 const std::uint8_t encoderCPort1 = 'E';
 const std::uint8_t encoderCPort2 = 'F';
+const std::uint8_t visionSensorPort = 'G';
 
 // const std::uint8_t imuPort = 4;
 

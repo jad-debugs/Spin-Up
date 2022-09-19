@@ -10,11 +10,24 @@ Motor leftFront(leftFrontPort, true, AbstractMotor::gearset::blue, AbstractMotor
 Motor leftTop(leftTopPort, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
-std::shared_ptr<ChassisController> drive =
-  ChassisControllerBuilder()
-  .withMotors({leftFront, leftTop, leftBottom}, {rightFront, rightTop, rightBottom})
-  .withDimensions(AbstractMotor::gearset::blue, {{4_in, 13.7_in}, imev5BlueTPR})
-  .build();
+// std::shared_ptr<ChassisController> drive =
+//   ChassisControllerBuilder()
+//   .withMotors({leftFront, leftTop, leftBottom}, {rightFront, rightTop, rightBottom})
+//   .withDimensions(AbstractMotor::gearset::blue, {{4_in, 13.7_in}, imev5BlueTPR})
+//   .build();
+
+  std::shared_ptr<OdomChassisController> drive = 
+    ChassisControllerBuilder()
+    .withMotors({leftFront, leftTop, leftBottom}, {rightFront, rightTop, rightBottom})
+    .withDimensions(AbstractMotor::gearset::blue, {{4_in, 13.7_in}, imev5BlueTPR})
+    .withSensors(
+        ADIEncoder{encoderLPort1, encoderLPort2}, // Left encoder
+        ADIEncoder{encoderLPort1, encoderLPort2},  // Right encoder
+        ADIEncoder{encoderLPort1, encoderLPort2, true}  // Center encoder reversed
+    )
+    // Specify the tracking wheels diam (2.75 in), track (7 in), and TPR (360)
+    .withOdometry({{1.375_in, 4_in, 2.75_in, 1.375_in}, quadEncoderTPR})
+    .buildOdometry();
 
 void updateDrive() {
   
@@ -39,6 +52,19 @@ void updateDrive() {
     rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
   }
   if (controller.getDigital(ControllerDigital::X) == 1) {
-    driveForward(12);
+    // auton 
+    drive->setState({115_in, 8.75_in, 180_deg});
+
+    drive->driveToPoint({115_in, 11_in}, true);
+    pros::delay(100);
+
+    drive->turnToPoint({23_in, 23_in});
+    pros::delay(100);
+
+    drive->driveToPoint({53_in, 18_in});
+    pros::delay(100);
+
+    // conveyor.moveVelocity(600);
+    // pros::delay(100);
   }
 }
