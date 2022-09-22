@@ -26,7 +26,7 @@ Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMot
         ADIEncoder{encoderLPort1, encoderLPort2, true}  // Center encoder reversed
     )
     // Specify the tracking wheels diam (2.75 in), track (7 in), and TPR (360)
-    .withOdometry({{1.375_in, 4_in, 2.75_in, 1.375_in}, quadEncoderTPR})
+    .withOdometry({{2.75_in, 6.5_in, 2.75_in, 2.75_in}, quadEncoderTPR})
     .buildOdometry();
 
 void updateDrive() {
