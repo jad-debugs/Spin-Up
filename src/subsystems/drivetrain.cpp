@@ -22,11 +22,11 @@ Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMot
     .withDimensions(AbstractMotor::gearset::blue, {{4_in, 13.7_in}, imev5BlueTPR})
     .withSensors(
         ADIEncoder{encoderLPort1, encoderLPort2}, // Left encoder
-        ADIEncoder{encoderLPort1, encoderLPort2},  // Right encoder
-        ADIEncoder{encoderLPort1, encoderLPort2, true}  // Center encoder reversed
+        ADIEncoder{encoderRPort1, encoderRPort2},  // Right encoder
+        ADIEncoder{encoderCPort1, encoderCPort2, true}  // Center encoder reversed
     )
     // Specify the tracking wheels diam (2.75 in), track (7 in), and TPR (360)
-    .withOdometry({{2.75_in, 6.5_in, 2.75_in, 2.75_in}, quadEncoderTPR})
+    .withOdometry({{2.75_in, 7.5_in, 1_in, 2.75_in}, quadEncoderTPR})
     .buildOdometry();
 
 void updateDrive() {
@@ -67,4 +67,13 @@ void updateDrive() {
     // conveyor.moveVelocity(600);
     // pros::delay(100);
   }
+  if (controller.getDigital(ControllerDigital::up) == 1) {
+    pros::lcd::set_text(1, std::to_string(drive->getState().x.convert(okapi::inch)));
+    pros::lcd::set_text(2, std::to_string(drive->getState().y.convert(okapi::inch)));
+    pros::lcd::set_text(3, std::to_string(drive->getState().theta.convert(okapi::degree)));
+  }
+  if (controller.getDigital(ControllerDigital::X) == 1) {
+    rotate(90);
+    // driveForward(2);
+  } 
 }
