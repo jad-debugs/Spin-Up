@@ -74,14 +74,11 @@ bool isPressed = false;
 
 // angle in degrees
 void rotate(double targetAngle) {
-    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.03);
-
-    targetAngle *= 180/PI;
+    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.0);
 
     double curAngle = drive->getState().theta.convert(okapi::degree);
 
-
-    while (abs(targetAngle - curAngle) >= 3) {
+    while (abs(targetAngle - curAngle) >= 10) {
         curAngle = drive->getState().theta.convert(okapi::degree);
 
         double vel = rotatePID.step(curAngle);

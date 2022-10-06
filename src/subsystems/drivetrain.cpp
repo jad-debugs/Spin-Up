@@ -73,7 +73,7 @@ void updateDrive() {
     pros::lcd::set_text(3, std::to_string(drive->getState().theta.convert(okapi::degree)));
   }
   if (controller.getDigital(ControllerDigital::X) == 1) {
-    rotate(90);
+    rotate(0);
     // driveForward(2);
   } 
 }
