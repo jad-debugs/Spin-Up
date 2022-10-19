@@ -38,7 +38,6 @@ void updateFlywheel()
         flywheel.moveVelocity(0);
         toggle3 = false;
 
-        
         // start intake when flywheel stops
         toggle1 = true;
         released1 = true;

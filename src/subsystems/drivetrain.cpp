@@ -30,7 +30,6 @@ Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMot
     .buildOdometry();
 
 void updateDrive() {
-  
   drive -> getModel() -> tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
 
   if (controller.getDigital(ControllerDigital::left) == 1) {
@@ -42,6 +41,7 @@ void updateDrive() {
     rightTop.setBrakeMode(AbstractMotor::brakeMode::hold);
     rightBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
   }
+
   else if (controller.getDigital(ControllerDigital::right) == 1) {
     leftFront.setBrakeMode(AbstractMotor::brakeMode::coast);
     leftTop.setBrakeMode(AbstractMotor::brakeMode::coast);
@@ -51,29 +51,16 @@ void updateDrive() {
     rightTop.setBrakeMode(AbstractMotor::brakeMode::coast);
     rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
   }
-  if (controller.getDigital(ControllerDigital::X) == 1) {
-    // auton 
-    drive->setState({115_in, 8.75_in, 180_deg});
-
-    drive->driveToPoint({115_in, 11_in}, true);
-    pros::delay(100);
-
-    drive->turnToPoint({23_in, 23_in});
-    pros::delay(100);
-
-    drive->driveToPoint({53_in, 18_in});
-    pros::delay(100);
-
-    // conveyor.moveVelocity(600);
-    // pros::delay(100);
-  }
+  
   if (controller.getDigital(ControllerDigital::up) == 1) {
     pros::lcd::set_text(1, std::to_string(drive->getState().x.convert(okapi::inch)));
     pros::lcd::set_text(2, std::to_string(drive->getState().y.convert(okapi::inch)));
-    pros::lcd::set_text(3, std::to_string(drive->getState().theta.convert(okapi::degree)));
+    pros::lcd::set_text(3, std::to_string(imu.controllerGet()));
   }
+  
   if (controller.getDigital(ControllerDigital::X) == 1) {
-    rotate(0);
+    rotate(90);
+
     // driveForward(2);
   } 
 }

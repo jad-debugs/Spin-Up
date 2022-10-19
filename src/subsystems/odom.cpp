@@ -16,6 +16,7 @@ const double T_c = 1;
 okapi::ADIEncoder leftEncoder = ADIEncoder(encoderLPort1, encoderLPort2, false);
 okapi::ADIEncoder rightEncoder = ADIEncoder(encoderRPort1, encoderRPort2, true);
 okapi::ADIEncoder centerEncoder = ADIEncoder(encoderCPort1, encoderCPort2, false);
+IMU imu(imuPort, IMUAxes::z);
 
 double posX = 0;
 double posY = 0;
@@ -74,27 +75,48 @@ bool isPressed = false;
 
 // angle in degrees
 void rotate(double targetAngle) {
-    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.0);
+    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.0125, 0, 0.0001);
+    
+    rotatePID.setTarget(targetAngle);
 
-    double curAngle = drive->getState().theta.convert(okapi::degree);
+    // double curAngle = drive->getState().theta.convert(okapi::degree);
+    double curAngle = imu.controllerGet();
 
-    while (abs(targetAngle - curAngle) >= 10) {
-        curAngle = drive->getState().theta.convert(okapi::degree);
+    while (abs(targetAngle - curAngle) >= 3) {
+        // curAngle = drive->getState().theta.convert(okapi::degree);
+        curAngle = imu.controllerGet();
 
         double vel = rotatePID.step(curAngle);
 
         drive -> getModel() -> tank(vel, -vel);
 
-        rate.delay(100_Hz);
+        pros::delay(10);
     }
-
+    
     rotatePID.reset();
+
+    leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
+    leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);
+    leftBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
+
+    rightFront.setBrakeMode(AbstractMotor::brakeMode::hold);
+    rightTop.setBrakeMode(AbstractMotor::brakeMode::hold);
+    rightBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
+
     drive -> getModel() -> tank(0, 0);
+
+    // leftFront.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // leftTop.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // leftBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
+
+    // rightFront.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // rightTop.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // rightBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
 }
 
 // distance in inches
 void driveForward(double distance) {
-    okapi::IterativePosPIDController drivePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.01);
+    okapi::IterativePosPIDController drivePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.001);
 
     const double target = distance;
 
@@ -118,7 +140,7 @@ void driveForward(double distance) {
 
         drive -> getModel() -> tank(vel, vel);
 
-        rate.delay(100_Hz);
+        pros::delay(10);
     }
 
     drivePID.reset();
