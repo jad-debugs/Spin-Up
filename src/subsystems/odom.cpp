@@ -2,6 +2,7 @@
 #include "okapi/api/control/iterative/iterativePosPidController.hpp"
 #include "okapi/impl/control/iterative/iterativeControllerFactory.hpp"
 #include <cmath>
+#include <iterator>
 #include <string>
 
 const double PI = 3.141592653589793238462643383279502884L;
@@ -75,7 +76,7 @@ bool isPressed = false;
 
 // angle in degrees
 void rotate(double targetAngle) {
-    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.0125, 0, 0.0001);
+    okapi::IterativePosPIDController rotatePID = okapi::IterativeControllerFactory::posPID(0.015, 0, 0.0001);
     
     rotatePID.setTarget(targetAngle);
 
@@ -90,21 +91,23 @@ void rotate(double targetAngle) {
 
         drive -> getModel() -> tank(vel, -vel);
 
-        pros::delay(10);
+        pros::delay(20);
     }
     
     rotatePID.reset();
 
-    leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
-    leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);
-    leftBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // leftFront.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // leftTop.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // leftBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-    rightFront.setBrakeMode(AbstractMotor::brakeMode::hold);
-    rightTop.setBrakeMode(AbstractMotor::brakeMode::hold);
-    rightBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // rightFront.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // rightTop.setBrakeMode(AbstractMotor::brakeMode::hold);
+    // rightBottom.setBrakeMode(AbstractMotor::brakeMode::hold);
 
     drive -> getModel() -> tank(0, 0);
 
+    // pros::delay(1000);
+    
     // leftFront.setBrakeMode(AbstractMotor::brakeMode::coast);
     // leftTop.setBrakeMode(AbstractMotor::brakeMode::coast);
     // leftBottom.setBrakeMode(AbstractMotor::brakeMode::coast);
@@ -116,7 +119,7 @@ void rotate(double targetAngle) {
 
 // distance in inches
 void driveForward(double distance) {
-    okapi::IterativePosPIDController drivePID = okapi::IterativeControllerFactory::posPID(0.1, 0, 0.001);
+    okapi::IterativePosPIDController drivePID = okapi::IterativeControllerFactory::posPID(0.75, 0, 0.001);
 
     const double target = distance;
 
@@ -127,13 +130,10 @@ void driveForward(double distance) {
 
     double distTravelled = 69696.420;
 
-    while (abs(target-distTravelled) >= 0.25) {
+    while (abs(target-distTravelled) >= 0.2) {
         double dx = drive->getState().x.convert(okapi::foot) - orgPosX;
         double dy = drive->getState().y.convert(okapi::foot) - orgPosY;
 
-        pros::lcd::set_text(1, std::to_string(drive->getState().x.convert(okapi::inch)));
-        pros::lcd::set_text(2, std::to_string(drive->getState().y.convert(okapi::inch)));
-        
         distTravelled = sqrt(dx*dx + dy*dy);
         
         double vel = drivePID.step(distTravelled);

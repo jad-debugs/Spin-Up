@@ -6,9 +6,9 @@
 using namespace okapi;
 
 // big boy d-train ports
-const std::uint8_t rightFrontPort = 13;
+const std::uint8_t rightFrontPort = 5;
 const std::uint8_t rightTopPort = 4;
-const std::uint8_t rightBottomPort = 5;
+const std::uint8_t rightBottomPort = 13;
 
 const std::uint8_t leftFrontPort = 11;
 const std::uint8_t leftTopPort = 19;
@@ -18,7 +18,7 @@ const std::uint8_t leftBottomPort = 18;
 const std::uint8_t conveyorPort = 9;
 
 // flywheel shooty port
-const std::uint8_t flywheelPort = 10;
+const std::uint8_t flywheelPort = 7;
 
 // sensors later
 const std::uint8_t encoderLPort1 = 'A';
@@ -33,6 +33,5 @@ const std::uint8_t imuPort = 20;
 
 // pnuematics if we use
 const std::uint8_t indexerPort = 'H';
-
 
 
