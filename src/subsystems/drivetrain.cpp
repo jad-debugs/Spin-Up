@@ -26,7 +26,7 @@ Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMot
         ADIEncoder{encoderCPort1, encoderCPort2, true}  // Center encoder reversed
     )
     // Specify the tracking wheels diam (2.75 in), track (7 in), and TPR (360)
-    .withOdometry({{2.75_in, 7.5_in, 1_in, 2.75_in}, quadEncoderTPR})
+    .withOdometry({{2.75_in, 6_in, 1_in, 2.75_in}, quadEncoderTPR})
     .buildOdometry();
 
 void updateDrive() {
@@ -59,13 +59,19 @@ void updateDrive() {
   }
   
   if (controller.getDigital(ControllerDigital::B) == 1) {
+    // roller
+    // pros::Motor conveyor (9); 
+    // conveyor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    // conveyor.move_relative(720, 600);
+
     rotate(90);
-    driveForward(3);
-    rotate(115);
+    driveForward(3, true);
+    // rotate(-65);
 
     int cnt = 0;
 
-    // while (cnt < 2) {
+    int prevError = 0;
+    // while (cnt < 1) {
     //     double kP = 0.03;
     //     double ki = 0.0;
     //     double kd = 0.1;
@@ -87,27 +93,13 @@ void updateDrive() {
     //         cnt++;
     //     }
 
-    //     rate.delay(10);
+    //     pros::delay(10);
     // }
 
     cnt = 0;
     // pros::delay(2000);
-    rotate(180);
+    // rotate(180);
   } 
 }
 
-class SelectionSort {
-  void sort(int arr[]) {
-    int n = arr.length;
-    for (int i = 0; i < n; i++) {
-      int min_idx = i;
-      for (int j = i+1; j < n; j++) {
-        if (arr[j] < arr[min_idx])
-          j = min_idx;
-      }
-      int temp = arr[min_idx];
-      arr[min_idx] = arr[i];
-      arr[i] = temp;
-    }
-  }
-}
+
