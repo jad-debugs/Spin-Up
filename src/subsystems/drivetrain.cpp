@@ -64,13 +64,31 @@ void updateDrive() {
     // conveyor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
     // conveyor.move_relative(720, 600);
 
+    // roll 1
+
+    driveForward(1.65, true);
+    rotate(-90);
+    driveForward(2);
+
+    // roll 2
+
+    driveForward(2, true);
+    rotate(130);
+    driveForward(10.25);
     rotate(90);
-    driveForward(3, true);
+    driveForward(2);
+
+    // // roll 3
+    driveForward(1.65, true);
+    rotate(179);
+    driveForward(2);
+
+
     // rotate(-65);
 
-    int cnt = 0;
+    // int cnt = 0;
 
-    int prevError = 0;
+    // int prevError = 0;
     // while (cnt < 1) {
     //     double kP = 0.03;
     //     double ki = 0.0;
@@ -96,7 +114,7 @@ void updateDrive() {
     //     pros::delay(10);
     // }
 
-    cnt = 0;
+    // cnt = 0;
     // pros::delay(2000);
     // rotate(180);
   } 

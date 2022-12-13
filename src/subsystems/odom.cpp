@@ -118,7 +118,7 @@ void rotate(double targetAngle) {
 }
 
 // distance in inches
-void driveForward(double distance, bool backwards = false) {
+void driveForward(double distance, bool backwards) {
     okapi::IterativePosPIDController drivePID = okapi::IterativeControllerFactory::posPID(0.75, 0, 0.00);
 
     const double target = distance;
