@@ -2,59 +2,51 @@
 
 using namespace okapi;
 
-bool released1 = true;
-bool released2 = true;
-bool toggle1 = false;
-bool toggle2 = false;
+Motor conveyor(conveyorPort, false, AbstractMotor::gearset::blue,
+               AbstractMotor::encoderUnits::degrees);
 
-Motor conveyor(conveyorPort, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+enum class IntakeState {
+  STOPPED = 0,
+  INTAKING = 1,
+  OUTTAKING = 2,
+};
 
-void updateConveyor()
-{
-  if (released3 && released4) {
-    if (controller.getDigital(ControllerDigital::R1) == 0)
-    {
-      released1 = true;
-    }
+IntakeState currentIntakeState = IntakeState::STOPPED;
+IntakeState previousIntakeState = IntakeState::STOPPED;
 
-    if (controller.getDigital(ControllerDigital::R1) == 1 && released1)
-    {
-      released1 = false;
+ControllerButton intakeButton = ControllerButton(ControllerDigital::L1);
+ControllerButton outakeButton = ControllerButton(ControllerDigital::down);
 
-      toggle2 = false;
-      released2 = true;
-      if (!toggle1){
-        conveyor.moveVelocity(600);
-        toggle1 = true;
-      } else if (toggle1){
-        conveyor.moveVelocity(0);
-        toggle1 = false;
-      }
+void intakeInit() { conveyor.setBrakeMode(AbstractMotor::brakeMode::coast); }
 
-    }
+void updateConveyor() {
 
-    if (controller.getDigital(ControllerDigital::R2) == 0)
-    {
-        released2 = true;
-    }
-
-if (controller.getDigital(ControllerDigital::R2) == 1 && released2){
-      released2 = false;
-
-      toggle1 = false;
-      released3 = true;
-      if (!toggle2){
-        conveyor.moveVelocity(-600);
-        toggle2 = true;
-} else if (toggle2){
-        conveyor.moveVelocity(0);
-        toggle2 = false;
-      }
-
-    }
-  }
-  else {
-    conveyor.moveVelocity(0);
+  if (outakeButton.changedToPressed()) {
+    previousIntakeState = currentIntakeState;
+    currentIntakeState = IntakeState::OUTTAKING;
+  } else if (outakeButton.changedToReleased()) {
+    currentIntakeState = previousIntakeState;
   }
 
+  if (intakeButton.changedToPressed()) {
+    if (currentIntakeState == IntakeState::INTAKING) {
+      previousIntakeState = currentIntakeState;
+      currentIntakeState = IntakeState::STOPPED;
+    } else {
+      previousIntakeState = currentIntakeState;
+      currentIntakeState = IntakeState::INTAKING;
+    }
+  }
+
+  switch (currentIntakeState) {
+  case IntakeState::STOPPED:
+    conveyor.moveVoltage(0);
+    break;
+  case IntakeState::INTAKING:
+    conveyor.moveVoltage(12000);
+    break;
+  case IntakeState::OUTTAKING:
+    conveyor.moveVoltage(-12000);
+    break;
+  }
 }

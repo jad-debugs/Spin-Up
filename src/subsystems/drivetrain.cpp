@@ -20,11 +20,11 @@ Motor leftBottom(leftBottomPort, true, AbstractMotor::gearset::blue, AbstractMot
     ChassisControllerBuilder()
     .withMotors({leftFront, leftTop, leftBottom}, {rightFront, rightTop, rightBottom})
     .withDimensions(AbstractMotor::gearset::blue, {{4_in, 13.7_in}, imev5BlueTPR})
-    .withSensors(
-        ADIEncoder{encoderLPort1, encoderLPort2}, // Left encoder
-        ADIEncoder{encoderRPort1, encoderRPort2},  // Right encoder
-        ADIEncoder{encoderCPort1, encoderCPort2, true}  // Center encoder reversed
-    )
+    // .withSensors(
+    //     ADIEncoder{encoderLPort1, encoderLPort2}, // Left encoder
+    //     ADIEncoder{encoderRPort1, encoderRPort2},  // Right encoder
+    //     ADIEncoder{encoderCPort1, encoderCPort2, true}  // Center encoder reversed
+    // )
     // Specify the tracking wheels diam (2.75 in), track (7 in), and TPR (360)
     .withOdometry({{2.75_in, 6_in, 1_in, 2.75_in}, quadEncoderTPR})
     .buildOdometry();
@@ -58,30 +58,49 @@ void updateDrive() {
     pros::lcd::set_text(3, std::to_string(imu.controllerGet()));
   }
   
+/*
+    autonDirect(1);
+
+    // roll 1
+
+    // driveForward(1.65, true);
+    // rotate(-90);
+    // driveForward(2, false);
+
+    // autonDirect(1);
+*/
+
   if (controller.getDigital(ControllerDigital::B) == 1) {
     // roller
     // pros::Motor conveyor (9); 
     // conveyor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
     // conveyor.move_relative(720, 600);
 
-    // roll 1
+    // roll 1 2
+
+
+    // rollUntilColor(1);
+    driveForward(1.65, true);
+    rotate(90);
+    driveForward(2);
+    // rollUntilColor(1);
+
+    // roll 3 4
+
+    // get to middle
+    driveForward(10, true);
+    rotate(178);
+
+    // // rolling 3rd
+    driveForward(8);
+    // rollUntilColor(1);
 
     driveForward(1.65, true);
     rotate(-90);
-    driveForward(2);
 
-    // roll 2
-
-    driveForward(2, true);
-    rotate(130);
-    driveForward(10.25);
-    rotate(90);
+    // // rolling 4th
     driveForward(2);
-
-    // // roll 3
-    driveForward(1.65, true);
-    rotate(179);
-    driveForward(2);
+    // rollUntilColor(1);
 
 
     // rotate(-65);

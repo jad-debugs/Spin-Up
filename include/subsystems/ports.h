@@ -1,3 +1,5 @@
+#pragma once
+
 #include "main.h"
 #include "okapi/impl/device/rotarysensor/IMU.hpp"
 #include "okapi/impl/device/rotarysensor/potentiometer.hpp"
@@ -20,18 +22,20 @@ const std::uint8_t conveyorPort = 21;
 // flywheel shooty port
 const std::uint8_t flywheelPort = 7;
 
+// optical
+const std::uint8_t opticalPort = 8; // 8
+
 // sensors later
-const std::uint8_t encoderLPort1 = 'H';
-const std::uint8_t encoderLPort2 = 'G';
-const std::uint8_t encoderRPort1 = 'A';
-const std::uint8_t encoderRPort2 = 'B';
-const std::uint8_t encoderCPort1 = 'E';
-const std::uint8_t encoderCPort2 = 'F';
-const std::uint8_t visionSensorPort = 'G'; // 8
+// const std::uint8_t encoderLPort1 = 'H';
+// const std::uint8_t encoderLPort2 = 'G';
+// const std::uint8_t encoderRPort1 = 'A';
+// const std::uint8_t encoderRPort2 = 'B';
+// const std::uint8_t encoderCPort1 = 'E';
+// const std::uint8_t encoderCPort2 = 'F';
 
 const std::uint8_t imuPort = 9;
 
 // pnuematics if we use
-const std::uint8_t indexerPort = 'H';
+const std::uint8_t indexerPort = 'F';
 
 

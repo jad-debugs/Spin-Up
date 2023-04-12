@@ -20,29 +20,34 @@
 
 // int cnt = 0;
 
-// while (cnt < 2) {
-//     double kP = 0.03;
-//     double ki = 0.0;
-//     double kd = 0.1;
+// void flywheelTBHControl() {
+//     float drive = 0;
+//     float driveAtZero = 0;
+//     float previousError = 0;
+//     bool firstZeroCross = true;
+//     while (true) {
+//         float flywheelTargetRPM = static_cast<int>(currentFlywheelState);
+//         float error = flywheelTargetRPM - (flywheelMotorGroup.getActualVelocity() * FLYWHEEL_GEAR_RATIO);
+//         drive += error * FW_TBH_GAIN;
+//         if (drive > 1) {
+//             drive = 1;
+//         } else if (drive < 0) {
+//             drive = 0;
+//         }
+//         if (squiggles::sgn(error) != squiggles::sgn(previousError)) {
+//             if (firstZeroCross) {
+//                 drive = flywheelTargetRPM * FW_VOLTAGE_CONSTANT;
+//                 firstZeroCross = false;
+//             } else {
+//                 drive = 0.5f * (drive + driveAtZero);
+//             }
+//             driveAtZero = drive;
+//         }
+//         previousError = error;
 
-//     int error = 450-flywheel.getActualVelocity();
-//     int integral = integral + error;
-//     int derivative = error - prevError;
-//     int prevError = error;
-//     int p = error * kP;
-//     int i = integral * ki;
-//     int d = derivative * kd;
-
-//     flywheel.moveVelocity(500+p+i+d);
-
-//     if (error - 25 <= 0 || error + 25 >= 0) {
-//         indexer.set_value(false);
-//         pros::delay(700);
-//         indexer.set_value(true);
-//         cnt++;
+//         flywheelMotorGroup.moveVoltage(drive * 12000.0f);
+//         pros::delay(10);
 //     }
-
-//     rate.delay(10);
 // }
 
 // cnt = 0;

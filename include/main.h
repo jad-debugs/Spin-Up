@@ -82,7 +82,7 @@ void opcontrol(void);
  #include "subsystems/indexer.h"
  #include "subsystems/flywheel.h"
  #include "motion/odom.h"
- #include "subsystems/autonomous.h"
+//  #include "subsystems/autonomous.h"
 //#include <iostream>
 #endif
 

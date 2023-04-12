@@ -1,6 +1,7 @@
 #include "main.h"
 #include "okapi/api/control/iterative/iterativePosPidController.hpp"
 #include "okapi/impl/control/iterative/iterativeControllerFactory.hpp"
+#include "okapi/impl/device/motor/motorGroup.hpp"
 #include <cmath>
 #include <iterator>
 #include <string>
@@ -8,15 +9,17 @@
 const double PI = 3.141592653589793238462643383279502884L;
 #define toRadian(theta) (PI/180*theta)
 
+MotorGroup leftDrive = {{leftFront, leftTop, leftBottom}};
+MotorGroup rightDrive = {{rightFront, rightTop, rightBottom}};
 
 const double WHEEL_RADIUS = 1.375;
 // const double T_l = 2.5;
 const double T_r = 3.75;
 const double T_c = 1;
 
-okapi::ADIEncoder leftEncoder = ADIEncoder(encoderLPort1, encoderLPort2, false);
-okapi::ADIEncoder rightEncoder = ADIEncoder(encoderRPort1, encoderRPort2, true);
-okapi::ADIEncoder centerEncoder = ADIEncoder(encoderCPort1, encoderCPort2, false);
+// okapi::ADIEncoder leftEncoder = ADIEncoder(encoderLPort1, encoderLPort2, false);
+// okapi::ADIEncoder rightEncoder = ADIEncoder(encoderRPort1, encoderRPort2, true);
+// okapi::ADIEncoder centerEncoder = ADIEncoder(encoderCPort1, encoderCPort2, false);
 IMU imu(imuPort, IMUAxes::z);
 
 double posX = 0;
@@ -83,7 +86,7 @@ void rotate(double targetAngle) {
     // double curAngle = drive->getState().theta.convert(okapi::degree);
     double curAngle = imu.controllerGet();
 
-    while (abs(targetAngle - curAngle) >= 3) {
+    while (abs(targetAngle - curAngle) >= 3 || abs(leftFront.getActualVelocity())>10 || abs(leftFront.getActualVelocity())>10) {
         // curAngle = drive->getState().theta.convert(okapi::degree);
         curAngle = imu.controllerGet();
 
@@ -130,7 +133,7 @@ void driveForward(double distance, bool backwards) {
 
     double distTravelled = 69696.420;
 
-    while (abs(target-distTravelled) >= 0.2) {
+    while (abs(target-distTravelled) >= 0.2 || abs(leftFront.getActualVelocity())>10) {
         double dx = drive->getState().x.convert(okapi::foot) - orgPosX;
         double dy = drive->getState().y.convert(okapi::foot) - orgPosY;
 
@@ -148,5 +151,94 @@ void driveForward(double distance, bool backwards) {
 
     drivePID.reset();
     drive -> getModel() -> tank(0, 0);
+}
+
+bool isRed(double hue) {
+  bool red = false;
+  if (hue >= 0 && hue <= 30) {
+    red = true;
+  }
+  return red;
+}
+
+void rollerRed() {
+  if (!isRed(opticalSensor.get_hue())) {
+    conveyor.moveVelocity(600);
+    pros::delay(400);
+    conveyor.moveVelocity(0);
+    pros::delay(100);
+    if (isRed(opticalSensor.get_hue())) {
+      conveyor.moveVelocity(-600);
+      pros::delay(200);
+      conveyor.moveVelocity(0);
+      pros::delay(100);
+    }
+    conveyor.moveVelocity(600);
+    pros::delay(100);
+    conveyor.moveVelocity(0);
+    pros::delay(20);
+  } else {
+    conveyor.moveVelocity(-600);
+    pros::delay(300);
+    conveyor.moveVelocity(0);
+    pros::delay(100);
+    if (!isRed(opticalSensor.get_hue())) {
+      conveyor.moveVelocity(600);
+      pros::delay(200);
+      conveyor.moveVelocity(0);
+      pros::delay(100);
+    }
+    conveyor.moveVelocity(-600);
+    pros::delay(100);
+    conveyor.moveVelocity(0);
+    pros::delay(20);
+  }
+  pros::delay(20);
+}
+
+void rollerBlue() {
+  if (!isRed(opticalSensor.get_hue())) {
+    conveyor.moveVelocity(-600);
+    pros::delay(400);
+    conveyor.moveVelocity(0);
+    pros::delay(100);
+    if (isRed(opticalSensor.get_hue())) {
+      conveyor.moveVelocity(600);
+      pros::delay(200);
+      conveyor.moveVelocity(0);
+      pros::delay(100);
+    }
+    conveyor.moveVelocity(-600);
+    pros::delay(100);
+    conveyor.moveVelocity(0);
+    pros::delay(20);
+  } else {
+    conveyor.moveVelocity(600);
+    pros::delay(400);
+    conveyor.moveVelocity(0);
+    pros::delay(100);
+    if (!isRed(opticalSensor.get_hue())) {
+      conveyor.moveVelocity(-600);
+      pros::delay(200);
+      conveyor.moveVelocity(0);
+      pros::delay(100);
+    }
+    conveyor.moveVelocity(600);
+    pros::delay(100);
+    conveyor.moveVelocity(0);
+    pros::delay(20);
+  }
+  pros::delay(20);
+}
+
+void rollUntilColor(int color) {
+  // red = 1, blue = 2
+  drive->getModel()->tank(.2, .2);
+  if (color == 1) {
+    rollerRed();
+  } else if (color == 2) {
+    rollerBlue();
+  }
+  pros::delay(1000);
 }
 

@@ -2,12 +2,18 @@
 
 using namespace okapi;
 
-pros::ADIDigitalOut indexer(indexerPort);
+pros::ADIDigitalOut indexer = pros::ADIDigitalOut(indexerPort);
+
+ControllerButton indexerButton = ControllerButton(ControllerDigital::L2);
+
+//void indexerInit() { indexer.set_value(false); }
+
+
 
 void updateIndexer() {
-   if (controller.getDigital(ControllerDigital::X) == 1) {
-       indexer.set_value(false);
-       pros::delay(700);
-       indexer.set_value(true);
-   }
+  if (indexerButton.changedToPressed()) {
+    indexer.set_value(true);
+    pros::delay(500);
+    indexer.set_value(false);
+  }
 }

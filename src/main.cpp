@@ -1,4 +1,6 @@
 #include "main.h"
+#include "autoSelect/selection.h"
+#include "subsystems/flywheel.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -28,6 +30,8 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+
+	selector::init();
 }
 
 /**
@@ -60,7 +64,19 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	
+
+	// 1 to 3 is red left, right, nothing
+	// -1 to -3 is blue left, right, nothing
+	// 0 is skills if we wna use
+
+	// if(selector::auton == 1) {}
+	// if(selector::auton == 2) {}
+	// if(selector::auton == 3) {}
+	// if(selector::auton == -1) {}
+	// if(selector::auton == -2) {}
+	// if(selector::auton == -3) {}
+
+
 }
 
 /**
@@ -78,10 +94,10 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-		updateDrive();
-		updateConveyor();
+		// updateDrive();
+		// updateConveyor();
 		updateIndexer();
-		updateFlywheel();
+		fwInit();
 		// updateOdom();
 		rate.delay(40_Hz);
 	}

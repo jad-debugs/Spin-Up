@@ -4,7 +4,8 @@
 okapi::Controller controller;
 okapi::Rate rate;
 
-pros::Vision visionSensor(visionSensorPort);
+pros::Optical opticalSensor = pros::Optical(opticalPort);
+
 
 // okapi::IMU imu = IMU(imuPort, IMUAxes::y);
 

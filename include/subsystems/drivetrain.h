@@ -1,3 +1,5 @@
+#pragma once
+
 #include "main.h"
 #include "okapi/impl/device/rotarysensor/potentiometer.hpp"
 
@@ -12,5 +14,7 @@ extern Motor leftTop;
 extern Motor leftBottom;
 
 extern std::shared_ptr<OdomChassisController> drive;
+
+extern pros::Optical opticalSensor;
 
 void updateDrive();
