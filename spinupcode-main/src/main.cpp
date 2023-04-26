@@ -8,6 +8,7 @@
 #include "subsystems/indexer.hpp"
 #include "subsystems/intake.hpp"
 #include "subsystems/odom.hpp"
+#include "subsystems/blooper.hpp"
 
 // using namespace okapi;
 
@@ -22,6 +23,7 @@ void initialize() {
   intakeInit();
   fwInit();
   expansionInit();
+  blooperInit();
   indexerInit();
   imuInnit();
   IEInnit();
@@ -85,6 +87,7 @@ void opcontrol() {
     updateConveyor();
     updateIndexer();
     updateExpansion();
+    updateBlooper();
 
     pros::Controller master (pros::E_CONTROLLER_MASTER);
    
